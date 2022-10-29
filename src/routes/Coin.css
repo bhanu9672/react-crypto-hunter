@@ -54,6 +54,7 @@ td, th {
 
 th {
     background-color: #333;
+    color: white !important;
 }
 
 .stats {

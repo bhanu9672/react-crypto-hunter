@@ -2,16 +2,14 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import DOMPurify from 'dompurify'
-
 import './Coin.css'
+import { Text } from '@chakra-ui/react'
 
 const Coin = () => {
 
     const params = useParams()
     const [coin, setCoin] = useState({})
-
     const url = `https://api.coingecko.com/api/v3/coins/${params.coinId}`
-
 
     useEffect(() => {
         axios.get(url).then((res) => {
@@ -22,7 +20,7 @@ const Coin = () => {
     }, [])
 
     return (
-        <div>
+        <>
             <div className='coin-container'>
                 <div className='content'>
                     <h1>{coin.name}</h1>
@@ -35,15 +33,12 @@ const Coin = () => {
                         <div className='coin-heading'>
                             {coin.image ? <img src={coin.image.small} alt='' /> : null}
                             <p>{coin.name}</p>
-                            {coin.symbol ? <p>{coin.symbol.toUpperCase()}/USD</p> : null}
-                            
                         </div>
                         <div className='coin-price'>
                             {coin.market_data?.current_price ? <h1>${coin.market_data.current_price.usd.toLocaleString()}</h1> : null}
                         </div>
                     </div>
                 </div>
-
                 <div className='content'>
                     <table>
                         <thead>
@@ -64,7 +59,6 @@ const Coin = () => {
                                 <td>{coin.market_data?.price_change_percentage_24h_in_currency ? <p>{coin.market_data.price_change_percentage_14d_in_currency.usd.toFixed(1)}%</p> : null}</td>
                                 <td>{coin.market_data?.price_change_percentage_24h_in_currency ? <p>{coin.market_data.price_change_percentage_30d_in_currency.usd.toFixed(1)}%</p> : null}</td>
                                 <td>{coin.market_data?.price_change_percentage_24h_in_currency ? <p>{coin.market_data.price_change_percentage_1y_in_currency.usd.toFixed(1)}%</p> : null}</td>
-
                             </tr>
                         </tbody>
                     </table>
@@ -78,8 +72,8 @@ const Coin = () => {
                             </div>
                             <div className='row'>
                                 <h4>24 Hour High</h4>
-                                {coin.market_data?.high_24h ? <p>${coin.market_data.high_24h.usd.toLocaleString()}</p> : null}                            </div>
-
+                                {coin.market_data?.high_24h ? <p>${coin.market_data.high_24h.usd.toLocaleString()}</p> : null}
+                            </div>
                         </div>
                         <div className='right'>
                             <div className='row'>
@@ -90,25 +84,22 @@ const Coin = () => {
                                 <h4>Circulating Supply</h4>
                                 {coin.market_data ? <p>{coin.market_data.circulating_supply}</p> : null}
                             </div>
-
                         </div>
                     </div>
                 </div>
-
                 <div className='content'>
                     <div className='about'>
-                        <h3>About</h3>
+                        <Text fontSize='2xl' my="15px">
+                            About {coin.name} ( { coin.symbol } )
+                        </Text>
                         <p dangerouslySetInnerHTML={{
                             __html: DOMPurify.sanitize(coin.description ? coin.description.en : ''),
                         }}>
-                        
                         </p>
-
                     </div>
                 </div>
-
             </div>
-        </div>
+        </>
     )
 }
 
