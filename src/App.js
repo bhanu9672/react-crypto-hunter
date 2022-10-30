@@ -8,6 +8,11 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer"
 import Coin from "./routes/Coin";
 import NotFound from "./Components/NotFound";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
+import { UserAuthContextProvider } from "./Context/UserAuthContext";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import Home from "./Components/Home";
 
 function App() {
 
@@ -27,12 +32,22 @@ function App() {
     <>
       <Container>
         <Header />
+        <UserAuthContextProvider>
         <Routes>
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+          />
           <Route exact path='/' element={<Coins coins={coins} />} />
+          <Route path="/login" element={ <Login /> } />
+          <Route path="/signup" element={ <Signup /> } />
           <Route path='/coin' element={<Coin />} />
           <Route path='/coin/:coinId' element={<Coin />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
+        </UserAuthContextProvider>
         <Footer />
       </Container>
     </>
