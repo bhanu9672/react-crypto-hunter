@@ -31,8 +31,8 @@ function App() {
   return (
     <>
       <Container>
-        <Header />
         <UserAuthContextProvider>
+        <Header />
         <Routes>
           <Route path="/home" element={
             <ProtectedRoute>

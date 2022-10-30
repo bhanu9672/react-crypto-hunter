@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Logo from "../logo.png"
 import { Image, Box } from '@chakra-ui/react'
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
@@ -25,9 +26,15 @@ function Header() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/login">Log In</Nav.Link>
-            <Nav.Link href="/signup">Sign Up</Nav.Link>
+            <Nav.Link>
+              <Link to="/">Home</Link>
+            </Nav.Link>
+            <Nav.Link>
+              <Link to="/login">Log In</Link>
+            </Nav.Link>
+            <Nav.Link>
+              <Link to="/signup">Sign Up</Link>
+            </Nav.Link>
             <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
