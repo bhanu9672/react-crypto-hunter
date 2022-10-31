@@ -1,23 +1,43 @@
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Logo from "../logo.png"
-import { Image, Box } from '@chakra-ui/react'
+import {
+  Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
+import { useUserAuth } from "../Context/UserAuthContext";
 
-function Header() {
+import { Button, ButtonProps, Flex, useColorMode } from '@chakra-ui/react';
+import { BsSun, BsMoonStarsFill } from 'react-icons/bs';
+
+
+function Header(props: ButtonProps) {
+  const { user } = useUserAuth();
+  console.log(user);
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="/">
-          <Image
-            borderRadius='full'
-            boxSize='150px'
-            src={ Logo }
-          />
+        <Navbar.Brand>
+          <Link to="/">
+            <Image
+              borderRadius='full'
+              boxSize='150px'
+              src={Logo}
+            />
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -29,22 +49,63 @@ function Header() {
             <Nav.Link>
               <Link to="/">Home</Link>
             </Nav.Link>
+            {
+              !user ?
+                <>
+                  <Nav.Link>
+                    <Link to="/login">
+                      Log In
+                    </Link>
+                  </Nav.Link>
+                </>
+                :
+                <>
+                  <Menu>
+                    <MenuButton as={Button} colorScheme='pink'>
+                      Profile
+                    </MenuButton>
+                    <MenuList>
+                      <MenuGroup title='Profile'>
+                        <MenuItem>
+                          <Link to="/profile">My Account</Link>
+                        </MenuItem>
+                        <MenuItem>
+                          <Link to="/">Home</Link>
+                        </MenuItem>
+                        <MenuItem>
+                          Wishlist
+                        </MenuItem>
+                        <MenuItem>
+                          Payments
+                        </MenuItem>
+                      </MenuGroup>
+                      <MenuDivider />
+                      <MenuGroup title='Help'>
+                        <MenuItem>Docs</MenuItem>
+                        <MenuItem>FAQ</MenuItem>
+                      </MenuGroup>
+                    </MenuList>
+                  </Menu>
+                </>
+            }
+            {
+              /* 
+                Ideally, only the button component should be used (without Flex).
+                Props compatible with <Button /> are supported. 
+              */
+            }
             <Nav.Link>
-              <Link to="/login">Log In</Link>
+              <Flex h="3vh" justifyContent="center" alignItems="center">
+                <Button
+                  aria-label="Toggle Color Mode"
+                  onClick={toggleColorMode}
+                  _focus={{ boxShadow: 'none' }}
+                  w="fit-content"
+                  {...props}>
+                  {colorMode === 'light' ? <BsMoonStarsFill /> : <BsSun />}
+                </Button>
+              </Flex>
             </Nav.Link>
-            <Nav.Link>
-              <Link to="/signup">Sign Up</Link>
-            </Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
-            </NavDropdown>
           </Nav>
           <Form className="d-flex">
             <Form.Control

@@ -14,7 +14,6 @@ const userAuthContext = createContext();
 export function UserAuthContextProvider({ children }) {
 
     const [user, setUser] = useState("");
-                                                                         
     function logIn(email, password) {
         return signInWithEmailAndPassword(auth, email, password);
     }
@@ -22,14 +21,12 @@ export function UserAuthContextProvider({ children }) {
         return createUserWithEmailAndPassword(auth, email, password);
     }
     function logOut() {
-        return signOut( auth );
+        return signOut(auth);
     }
-
     function googlesignIn() {
         const googleAuthProvider = new GoogleAuthProvider();
-        return signInWithPopup( auth , googleAuthProvider )
+        return signInWithPopup(auth, googleAuthProvider)
     }
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
             console.log("Auth", currentuser);
@@ -42,7 +39,16 @@ export function UserAuthContextProvider({ children }) {
     }, []);
 
     return (
-        <userAuthContext.Provider value={{ user, signUp, logIn, logOut,googlesignIn }}>
+        <userAuthContext.Provider
+            value={
+                {
+                    user,
+                    signUp,
+                    logIn,
+                    logOut,
+                    googlesignIn,
+                }
+            }>
             {children}
         </userAuthContext.Provider>
     )

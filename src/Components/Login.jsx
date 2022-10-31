@@ -15,7 +15,7 @@ const Login = () => {
     const [email, SetEmail] = useState("");
     const [password, SetPassword] = useState("");
     const [error, setError] = useState("");
-    const { logIn,googlesignIn } = useUserAuth();
+    const { logIn,googlesignIn,user } = useUserAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -23,17 +23,17 @@ const Login = () => {
         setError("");
         try {
             await logIn(email, password);
-            navigate("/home");
+            navigate("/profile");
         } catch (err) {
             setError(err.message);
         }
     };
-
     const handleGoogleSignIn = async (e) => {
         e.preventDefault();
         try {
-            await googlesignIn();
-            navigate( "/home" );
+            await googlesignIn();   
+            console.log( user )
+            navigate( "/profile" );
         } catch( err ) {
             setError(err.message);
         }
@@ -53,7 +53,6 @@ const Login = () => {
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control type="email" placeholder="Enter email" onChange={(e) => SetEmail(e.target.value)} />
                             </Form.Group>
-
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" onChange={(e) => SetPassword(e.target.value)} />
@@ -64,8 +63,9 @@ const Login = () => {
                                 </Button>
                             </div>
                         </Form>
-                        <div className="my-3">
-                            <hr ></hr> <br />
+                        <div className="my-3 text-center">
+                            OR
+                            <br /><br />
                             <div>
                                 <GoogleButton className="g-btn" type="dark" onClick={ handleGoogleSignIn } />
                             </div>

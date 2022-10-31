@@ -12,7 +12,7 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import { UserAuthContextProvider } from "./Context/UserAuthContext";
 import ProtectedRoute from "./Components/ProtectedRoute";
-import Home from "./Components/Home";
+import Profile from "./Components/Profile";
 
 function App() {
 
@@ -34,9 +34,9 @@ function App() {
         <UserAuthContextProvider>
         <Header />
         <Routes>
-          <Route path="/home" element={
+          <Route path="/profile" element={
             <ProtectedRoute>
-              <Home />
+              <Profile />
             </ProtectedRoute>
           }
           />
