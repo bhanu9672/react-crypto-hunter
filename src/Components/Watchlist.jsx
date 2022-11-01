@@ -36,7 +36,6 @@ const Watchlist = () => {
         })
     }, [])
 
-
     const { user, watchlist } = useUserAuth();
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -55,9 +54,8 @@ const Watchlist = () => {
 
         }
     }
-
     console.table(watchlist)
-
+    
     console.log("coin :" + coin)
 
     return (
@@ -76,53 +74,29 @@ const Watchlist = () => {
                     <DrawerCloseButton />
                     <DrawerHeader>Your Coin Watchlist</DrawerHeader>
 
-
-
                     <DrawerBody>
-
                         <div className="py-5">
                             {
                                 coin.map(coin => {
-                                    if( watchlist.includes( coin.id ) )
-                                    return (
-                                        <>
-                                            <HStack mb="30px">
-                                                <Center>
-                                                    Coin Id : {coin.name}
-                                                </Center>
-                                                <Center w='100px' h='40px'>
-                                                    <Button colorScheme='teal' variant='solid' onClick={(e) => removeFromWatchlist(coin)}>
-                                                        Remove
-                                                    </Button>
-                                                </Center>
-                                            </HStack>
-                                        </>
-                                    )
+                                    if (watchlist.includes(coin.id)) {
+                                        return (
+                                            <>
+                                                <HStack mb="30px" key={coin.id}>
+                                                    <Center>
+                                                        Coin Id : {coin.name}
+                                                    </Center>
+                                                    <Center w='100px' h='40px'>
+                                                        <Button colorScheme='teal' variant='solid' onClick={(e) => removeFromWatchlist(coin)}>
+                                                            Remove
+                                                        </Button>
+                                                    </Center>
+                                                </HStack>
+                                            </>
+                                        )
+                                    }
                                 })
                             }
                         </div>
-
-
-                        {/* <div className="py-5">
-                            {
-                                coin.map(coin => {
-                                    return (
-                                        <>
-                                            <HStack mb="30px">
-                                                <Center>
-                                                    Coin Id : {coin.name}
-                                                </Center>
-                                                <Center w='40px' h='40px' bg='tomato' color='white'>
-                                                    <Button onClick={(e) => removeFromWatchlist(coin)}>
-                                                        <AiFillDelete />
-                                                    </Button>
-                                                </Center>
-                                            </HStack>
-                                        </>
-                                    )
-                                })
-                            }
-                        </div> */}
                     </DrawerBody>
 
                     <DrawerFooter>
