@@ -21,12 +21,14 @@ import { useUserAuth } from "../Context/UserAuthContext";
 
 import { Button, ButtonProps, Flex, useColorMode } from '@chakra-ui/react';
 import { BsSun, BsMoonStarsFill } from 'react-icons/bs';
-
+import Watchlist from './Watchlist';
 
 function Header(props: ButtonProps) {
+
   const { user } = useUserAuth();
   console.log(user);
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -73,7 +75,9 @@ function Header(props: ButtonProps) {
                           <Link to="/">Home</Link>
                         </MenuItem>
                         <MenuItem>
-                          Wishlist
+                          <Nav.Link>
+                            {user && <Watchlist /> }
+                          </Nav.Link>
                         </MenuItem>
                         <MenuItem>
                           Payments

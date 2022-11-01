@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Form,
     Button,
@@ -23,6 +23,7 @@ const Login = () => {
         setError("");
         try {
             await logIn(email, password);
+            console.log( user )
             navigate("/profile");
         } catch (err) {
             setError(err.message);

@@ -7,13 +7,16 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth"
-import { auth } from "../firebase";
+import { auth,db } from "../firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
 
     const [user, setUser] = useState("");
+    const [watchlist, setWatchlist] = useState([]);
+
     function logIn(email, password) {
         return signInWithEmailAndPassword(auth, email, password);
     }
@@ -27,15 +30,44 @@ export function UserAuthContextProvider({ children }) {
         const googleAuthProvider = new GoogleAuthProvider();
         return signInWithPopup(auth, googleAuthProvider)
     }
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
-            console.log("Auth", currentuser);
-            setUser(currentuser);
-        });
 
-        return () => {
+    useEffect(() => {
+        if (user) {
+          const coinRef = doc(db, "watchlist", user?.uid);
+          var unsubscribe = onSnapshot(coinRef, (coin) => {
+            if (coin.exists()) {
+              console.log(coin.data().coins);
+              setWatchlist(coin.data().coins);
+            } else {
+              console.log("No Items in Watchlist");
+            }
+          });
+    
+          return () => {
             unsubscribe();
-        };
+          };
+        }
+      }, [user]);
+
+    useEffect(() => {
+        // const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
+        //     console.log("Auth", currentuser);
+        //     setUser(currentuser);
+        // });
+
+        // return () => {
+        //     unsubscribe();
+        // };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Auth", user);
+                setUser(user);
+            } else {
+                setUser( null )
+            }
+        })
+
     }, []);
 
     return (
@@ -47,6 +79,7 @@ export function UserAuthContextProvider({ children }) {
                     logIn,
                     logOut,
                     googlesignIn,
+                    watchlist,
                 }
             }>
             {children}

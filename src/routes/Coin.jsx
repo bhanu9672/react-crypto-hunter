@@ -3,12 +3,21 @@ import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import DOMPurify from 'dompurify'
 import './Coin.css'
-import { Text } from '@chakra-ui/react'
+import { Button, Text } from '@chakra-ui/react'
+import { useUserAuth } from '../Context/UserAuthContext';
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase"
+import {
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+  } from '@chakra-ui/react'
 
 const Coin = () => {
 
-    const params = useParams()
-    const [coin, setCoin] = useState({})
+    const [coin, setCoin] = useState({});
+    const params = useParams();
     const url = `https://api.coingecko.com/api/v3/coins/${params.coinId}`
 
     useEffect(() => {
@@ -19,8 +28,58 @@ const Coin = () => {
         })
     }, [])
 
+    const [alertWatchlist, SetalertWatchlist] = useState('');
+
+    const { user, watchlist } = useUserAuth();
+
+    const inWatchlist = watchlist.includes(coin?.id);
+
+    const addToWatchlist = async () => {
+        const coinRef = doc(db, "watchlist", user.uid);
+        try {
+            await setDoc(coinRef, {
+                coins: watchlist ? [...watchlist, coin.id] : [coin?.id],
+            });
+            console.log(coin.name + " is add Your watchlist.");
+            SetalertWatchlist(coin.name + " is add Your watchlist.");
+        } catch (error) {
+
+        }
+    }
+
+    const removeFromWatchlist = async () => {
+        const coinRef = doc(db, "watchlist", user.uid);
+        try {
+            await setDoc(coinRef, {
+                coins: watchlist.filter((watch) => watch !== coin.id)
+            },
+                { merge: "true" }
+            );
+            console.log(coin.name + " Removed from the Watchlist !");
+            SetalertWatchlist(coin.name + " Removed from the Watchlist !");
+        } catch (error) {
+
+        }
+    }
+
     return (
         <>
+            {
+                alertWatchlist ?
+                    <>
+                        <Alert status='success'>
+                            <AlertIcon />
+                            {alertWatchlist}
+                        </Alert>
+                    </>
+                    :
+                    <>
+                        <Alert status='success'>
+                            <AlertIcon />
+                            {alertWatchlist}
+                        </Alert>
+                    </>
+            }
             <div className='coin-container'>
                 <div className='content'>
                     <h1>{coin.name}</h1>
@@ -37,6 +96,16 @@ const Coin = () => {
                         <div className='coin-price'>
                             {coin.market_data?.current_price ? <h1>${coin.market_data.current_price.usd.toLocaleString()}</h1> : null}
                         </div>
+                        {
+                            user && (
+                                <Button
+                                    colorScheme='teal'
+                                    variant='solid'
+                                    onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}>
+                                    {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}
+                                </Button>
+                            )
+                        }
                     </div>
                 </div>
                 <div className='content'>
@@ -90,7 +159,7 @@ const Coin = () => {
                 <div className='content'>
                     <div className='about'>
                         <Text fontSize='2xl' my="15px">
-                            About {coin.name} ( { coin.symbol } )
+                            About {coin.name} ( {coin.symbol} )
                         </Text>
                         <p dangerouslySetInnerHTML={{
                             __html: DOMPurify.sanitize(coin.description ? coin.description.en : ''),
@@ -103,4 +172,4 @@ const Coin = () => {
     )
 }
 
-export default Coin
+export default Coin;
