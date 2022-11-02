@@ -13,6 +13,7 @@ import Signup from "./Components/Signup";
 import { UserAuthContextProvider } from "./Context/UserAuthContext";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Profile from "./Components/Profile";
+import ScrollButton from "./Components/ScrollButton";
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
           <Route path='*' element={<NotFound />} />
         </Routes>
         </UserAuthContextProvider>
+        <ScrollButton />
         <Footer />
       </Container>
     </>
