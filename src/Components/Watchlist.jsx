@@ -13,14 +13,15 @@ import {
     Box,
     ButtonGroup,
 } from '@chakra-ui/react'
-import { AiFillDelete } from "react-icons/ai";
-import { Center, Square, Circle } from '@chakra-ui/react'
+import { Center } from '@chakra-ui/react'
 import { useUserAuth } from '../Context/UserAuthContext'
 import axios from 'axios'
-import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase"
+import {
+    useToast,
+} from '@chakra-ui/react'
 
 const Watchlist = () => {
 
@@ -38,6 +39,9 @@ const Watchlist = () => {
 
     const { user, watchlist } = useUserAuth();
 
+    const toast = useToast()
+    const toastIdRef = React.useRef()
+
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
 
@@ -50,12 +54,20 @@ const Watchlist = () => {
                 { merge: "true" }
             );
             console.log(coin.name + " Removed from the Watchlist !");
+            toastIdRef.current = toast({
+                //title: 'Account created.',
+                description: `${coin.name}  Removed from the Watchlist !`,
+                status: 'success',
+                duration: 4000,
+                position: 'top',
+                isClosable: true,
+            })
         } catch (error) {
 
         }
     }
     console.table(watchlist)
-    
+
     console.log("coin :" + coin)
 
     return (

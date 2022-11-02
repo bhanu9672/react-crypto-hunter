@@ -1,4 +1,3 @@
-import { async } from '@firebase/util';
 import React, { useState } from 'react'
 import {
     Form,
@@ -7,6 +6,9 @@ import {
     Col,
     Alert,
 } from 'react-bootstrap';
+import {
+    useToast,
+} from '@chakra-ui/react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../Context/UserAuthContext';
 
@@ -18,11 +20,22 @@ const Signup = () => {
     const { signUp } = useUserAuth();
     const navigate = useNavigate();
 
+    const toast = useToast()
+    const toastIdRef = React.useRef()
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         try {
             await signUp(email, password);
+            toastIdRef.current = toast({
+                title: 'Account created.',
+                description: `We've created your account for you.`,
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                position: 'top',
+            })
             navigate( "/login" )
         } catch (err) {
             setError(err.message);

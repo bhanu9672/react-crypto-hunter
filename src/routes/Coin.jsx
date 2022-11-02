@@ -8,13 +8,13 @@ import { useUserAuth } from '../Context/UserAuthContext';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase"
 import {
-    Alert,
-    AlertIcon,
-    AlertTitle,
-    AlertDescription,
-  } from '@chakra-ui/react'
+    useToast,
+} from '@chakra-ui/react'
 
 const Coin = () => {
+
+    const toast = useToast()
+    const toastIdRef = React.useRef()
 
     const [coin, setCoin] = useState({});
     const params = useParams();
@@ -28,10 +28,7 @@ const Coin = () => {
         })
     }, [])
 
-    const [alertWatchlist, SetalertWatchlist] = useState('');
-
     const { user, watchlist } = useUserAuth();
-
     const inWatchlist = watchlist.includes(coin?.id);
 
     const addToWatchlist = async () => {
@@ -40,10 +37,15 @@ const Coin = () => {
             await setDoc(coinRef, {
                 coins: watchlist ? [...watchlist, coin.id] : [coin?.id],
             });
-            console.log(coin.name + " is add Your watchlist.");
-            SetalertWatchlist(coin.name + " is add Your watchlist.");
+            toastIdRef.current = toast({
+                //title: 'Account created.',
+                description: `${coin.name} is add Your watchlist`,
+                status: 'success',
+                duration: 4000,
+                position: 'top',
+                isClosable: true,
+            })
         } catch (error) {
-
         }
     }
 
@@ -55,31 +57,20 @@ const Coin = () => {
             },
                 { merge: "true" }
             );
-            console.log(coin.name + " Removed from the Watchlist !");
-            SetalertWatchlist(coin.name + " Removed from the Watchlist !");
+            toastIdRef.current = toast({
+                //title: 'Account created.',
+                description: `${coin.name} Removed from the Watchlist.`,
+                status: 'success',
+                duration: 5000,
+                position: 'top',
+                isClosable: true,
+            })
         } catch (error) {
-
         }
     }
 
     return (
         <>
-            {
-                alertWatchlist ?
-                    <>
-                        <Alert status='success'>
-                            <AlertIcon />
-                            {alertWatchlist}
-                        </Alert>
-                    </>
-                    :
-                    <>
-                        <Alert status='success'>
-                            <AlertIcon />
-                            {alertWatchlist}
-                        </Alert>
-                    </>
-            }
             <div className='coin-container'>
                 <div className='content'>
                     <h1>{coin.name}</h1>
@@ -99,7 +90,7 @@ const Coin = () => {
                         {
                             user && (
                                 <Button
-                                    colorScheme='teal'
+                                    colorScheme={inWatchlist ? 'red' : 'teal'}
                                     variant='solid'
                                     onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}>
                                     {inWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}

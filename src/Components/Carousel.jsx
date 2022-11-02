@@ -28,19 +28,17 @@ const Carousel = () => {
         slidesToShow: 3,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 1500
+        autoplaySpeed: 1000
     };
 
     return (
         <>
-
             <div className='text-center my-5'>
                 <Heading mb={4}>Crypto Hunter</Heading>
                 <Heading as='h5' size='md'>
                     Get All The Info Regarding Your Favorite Crypto Currency
                 </Heading>
             </div>
-
             {
                 trandings.length > 0 ?
                     <Slider {...settings}>

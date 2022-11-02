@@ -6,6 +6,9 @@ import {
     Col,
     Alert,
 } from 'react-bootstrap';
+import {
+    useToast,
+} from '@chakra-ui/react'
 import GoogleButton from 'react-google-button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../Context/UserAuthContext';
@@ -18,11 +21,22 @@ const Login = () => {
     const { logIn,googlesignIn,user } = useUserAuth();
     const navigate = useNavigate();
 
+    const toast = useToast()
+    const toastIdRef = React.useRef()
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         try {
             await logIn(email, password);
+            toastIdRef.current = toast({
+                title: 'Account login successfully',
+                description: `Now you LogIn account with your Account.`,
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+                position: 'top',
+            })
             console.log( user )
             navigate("/profile");
         } catch (err) {
@@ -33,6 +47,14 @@ const Login = () => {
         e.preventDefault();
         try {
             await googlesignIn();   
+            toastIdRef.current = toast({
+                title: 'Account login successfully',
+                description: `Now you LogIn account with your Account.`,
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+                position: 'top',
+            })
             console.log( user )
             navigate( "/profile" );
         } catch( err ) {
