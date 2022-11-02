@@ -14,11 +14,13 @@ import { UserAuthContextProvider } from "./Context/UserAuthContext";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Profile from "./Components/Profile";
 import ScrollButton from "./Components/ScrollButton";
+import Demo from "./Components/Demo";
+import CoinTable from "./Components/CoinTable";
 
 function App() {
 
   const [coins, setCoins] = useState( [] )
-  const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false'
+  const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=200&page=1&sparkline=false'
 
   useEffect(() => {
     axios.get(url).then((response) => {
@@ -42,6 +44,7 @@ function App() {
           }
           />
           <Route exact path='/' element={<Coins coins={coins} />} />
+          <Route exact path='/coin-table' element={<CoinTable />} />
           <Route path="/login" element={ <Login /> } />
           <Route path="/signup" element={ <Signup /> } />
           <Route path='/coin' element={<Coin />} />
@@ -50,6 +53,7 @@ function App() {
         </Routes>
         </UserAuthContextProvider>
         <ScrollButton />
+        {/* <Demo /> */}
         <Footer />
       </Container>
     </>

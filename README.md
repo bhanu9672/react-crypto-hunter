@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# Cryptocurrency Tracker with React JS
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Live Site Demo
+#### Here is a working live demo :  https://react-crypto-hunter.onrender.com/
+
+## Built with 
+
+- [React JS](https://reactjs.org/)
+- [Chakra UI](https://chakra-ui.com/)
+- [React Bootstrap](https://react-bootstrap.github.io/)
+- [Firebase](https://firebase.google.com/)
 
 ## Available Scripts
 

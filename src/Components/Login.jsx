@@ -37,7 +37,6 @@ const Login = () => {
                 isClosable: true,
                 position: 'top',
             })
-            console.log( user )
             navigate("/profile");
         } catch (err) {
             setError(err.message);

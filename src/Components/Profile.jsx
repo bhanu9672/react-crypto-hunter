@@ -13,18 +13,28 @@ import {
     Alert,
     Avatar,
     Stack,
+    useToast,
 } from '@chakra-ui/react'
 import { Image } from "react-bootstrap";
 
 const Profile = () => {
 
     const { user, logOut } = useUserAuth();
-    console.log(user);
+    const toast = useToast();
+    const toastIdRef = React.useRef();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef()
     const handleLogOut = async () => {
         try {
             await logOut();
+            toastIdRef.current = toast({
+                ///title: 'LogOut Successfully',
+                description: `LogOut Successfully.`,
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+                position: 'top',
+            })
         } catch (err) {
             console.log(err.massage);
         }
