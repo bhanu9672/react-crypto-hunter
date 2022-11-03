@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 // And react-slick as our Carousel Lib
 import Slider from 'react-slick';
-import { Image } from 'react-bootstrap';
+import { Image, Badge } from '@chakra-ui/react'
 import axios from "axios";
 import { Heading, Skeleton, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
+import { Text } from '@chakra-ui/react'
 
 const Carousel = () => {
 
@@ -46,21 +47,29 @@ const Carousel = () => {
                             trandings.map((tranding) =>
                                 <>
                                     <div key={tranding.id}>
-                                        <Link to={`/coin/${tranding.id}`}>Go Link
-                                            <h1>{tranding.name}</h1>
-                                            <h2>$ {tranding.current_price}</h2>
-                                            <h2>
-                                                {
-                                                    tranding.market_cap_change_percentage_24h >= 0 ?
-                                                        <>+{tranding.market_cap_change_percentage_24h}</> :
-                                                        tranding.market_cap_change_percentage_24h
-                                                }
-                                            </h2>
-                                            <h3>
-                                                <Image
-                                                    src={tranding.image}
-                                                />
-                                            </h3>
+                                        <Link to={`/coin/${tranding.id}`}>
+                                            <Image
+                                                borderRadius='full'
+                                                boxSize='120px'
+                                                src={tranding.image}
+                                                alt={tranding.name}
+                                            />
+                                            <Text fontSize='1xl' my="5px">{tranding.name} ( {tranding.symbol} )</Text>
+                                            <Text fontSize='xl' my="5px">$ {tranding.current_price}</Text>
+                                            {
+                                                tranding.market_cap_change_percentage_24h >= 0 ?
+                                                    <>
+                                                        <Badge variant='solid' colorScheme='green' style={{ padding: "8px" }}>
+                                                            {tranding.market_cap_change_percentage_24h}
+                                                        </Badge>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Badge variant='solid' colorScheme='red' style={{ padding: "8px" }}>
+                                                            {tranding.market_cap_change_percentage_24h}
+                                                        </Badge>
+                                                    </>
+                                            }
                                         </Link>
                                     </div>
                                 </>

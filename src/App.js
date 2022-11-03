@@ -14,8 +14,6 @@ import { UserAuthContextProvider } from "./Context/UserAuthContext";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Profile from "./Components/Profile";
 import ScrollButton from "./Components/ScrollButton";
-import Demo from "./Components/Demo";
-import CoinTable from "./Components/CoinTable";
 
 function App() {
 
@@ -44,7 +42,6 @@ function App() {
           }
           />
           <Route exact path='/' element={<Coins coins={coins} />} />
-          <Route exact path='/coin-table' element={<CoinTable />} />
           <Route path="/login" element={ <Login /> } />
           <Route path="/signup" element={ <Signup /> } />
           <Route path='/coin' element={<Coin />} />
@@ -53,7 +50,6 @@ function App() {
         </Routes>
         </UserAuthContextProvider>
         <ScrollButton />
-        {/* <Demo /> */}
         <Footer />
       </Container>
     </>

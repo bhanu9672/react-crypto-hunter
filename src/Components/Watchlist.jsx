@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import {
     Drawer,
     DrawerBody,
@@ -7,16 +9,11 @@ import {
     DrawerContent,
     DrawerCloseButton,
     useDisclosure,
-    Input,
     Button,
     HStack,
-    Box,
-    ButtonGroup,
+    Center
 } from '@chakra-ui/react'
-import { Center } from '@chakra-ui/react'
 import { useUserAuth } from '../Context/UserAuthContext'
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase"
 import {
@@ -63,13 +60,9 @@ const Watchlist = () => {
                 isClosable: true,
             })
         } catch (error) {
-
         }
     }
     console.table(watchlist)
-
-    console.log("coin :" + coin)
-
     return (
         <>
             <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
